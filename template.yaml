@@ -8,10 +8,10 @@ Description: >
 # More info about Globals: https://github.com/awslabs/serverless-application-model/blob/master/docs/globals.rst
 Globals:
   Function:
-    Timeout: 3
+    Timeout: 900
 
 Resources:
-  HelloWorldFunction:
+  WebFunction:
     Type: AWS::Serverless::Function
     Properties:
       PackageType: Image
@@ -21,23 +21,20 @@ Resources:
         HelloWorld:
           Type: Api
           Properties:
-            Path: /hello
-            Method: get
+            Path: /web
+            Method: post
     Metadata:
       DockerTag: nodejs22.x-v1
-      DockerContext: ./hello-world
+      DockerContext: ./web
       Dockerfile: Dockerfile
 
 Outputs:
   # ServerlessRestApi is an implicit API created out of Events key under Serverless::Function
   # Find out more about other implicit resources you can reference within SAM
   # https://github.com/awslabs/serverless-application-model/blob/master/docs/internals/generated_resources.rst#api
-  HelloWorldApi:
-    Description: "API Gateway endpoint URL for Prod stage for Hello World function"
-    Value: !Sub "https://${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com/Prod/hello/"
-  HelloWorldFunction:
-    Description: "Hello World Lambda Function ARN"
-    Value: !GetAtt HelloWorldFunction.Arn
-  HelloWorldFunctionIamRole:
-    Description: "Implicit IAM Role created for Hello World function"
-    Value: !GetAtt HelloWorldFunctionRole.Arn
+  WebFunction:
+    Description: "API Gateway endpoint URL for web application"
+    Value: !Sub "https://${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com/Prod/web/"
+  WebFunctionIamRole:
+    Description: "Implicit IAM Role created for  web function"
+    Value: !GetAtt WebFunctionRole.Arn
