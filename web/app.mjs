@@ -10,14 +10,37 @@
  * @returns {Object} object - API Gateway Lambda Proxy Output Format
  * 
  */
+import getArgs from './utils/get_args.js';
+import callFn from './utils/call_fn.js';
 
 export const lambdaHandler = async (event, context) => {
+  try {
+
+    const input = getArgs(event);
+    let { fnName, args } = input;
+
+    const res = await callFn(fnName, args);
+
     const response = {
       statusCode: 200,
-      body: JSON.stringify({
-        message: 'hello world',
-      })
+      body: JSON.stringify(res),
     };
 
     return response;
-  };
+  } catch (err) {
+    console.error(err);
+    let error;
+    if (err instanceof Error) {
+      error = err.message;
+    } else {
+      error = err;
+    }
+    return {
+      statusCode: 500,
+      body: JSON.stringify({
+        message: 'Internal Server Error',
+        error,
+      }),
+    }
+  }
+}
