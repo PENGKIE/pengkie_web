@@ -1,6 +1,6 @@
 
 let _client;
-const { MongoClient } = require('mongodb');
+const { MongoClient , ObjectId } = require('mongodb');
 
 module.exports = {
     connectDB: async function () {
@@ -10,5 +10,9 @@ module.exports = {
             await _client.connect();
         }
         return _client;
+    },
+
+    newObjectId: function (id) {
+        return new ObjectId(id)
     }
 }

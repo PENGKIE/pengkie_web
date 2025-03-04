@@ -2,7 +2,7 @@ FROM public.ecr.aws/lambda/nodejs:22
 
 COPY app.mjs package*.json ./
 COPY functions/ ./functions/
-COPY values/ ./values/
+# COPY values/ ./values/
 COPY utils/ ./utils/
 COPY my_env/ ./my_env/
 
