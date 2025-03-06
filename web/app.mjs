@@ -15,7 +15,6 @@ import callFn from './utils/call_fn.js';
 
 export const lambdaHandler = async (event, context) => {
   try {
-
     const input = getArgs(event);
     let { fnName, args } = input;
 
@@ -44,3 +43,4 @@ export const lambdaHandler = async (event, context) => {
     }
   }
 }
+
