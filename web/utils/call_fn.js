@@ -11,6 +11,8 @@ module.exports = (name, ...args) => {
             return require('../functions/create_and_update_document.js')(...args);
         case 'cateForWeb': 
             return require('../functions/cate_for_web.js')(...args);
+        case 'getListLogging': 
+            return require('../functions/get_list_logging.js')(...args);
         default:
             throw new Error('Function not found');
     }
