@@ -9,7 +9,7 @@ const { connectDB , newObjectId } = require('../utils/connect_db');
     }
 
 */
-exports = async function (input) {
+module.exports = async (input) => {
 
     if (!input.length) throw 'not found input';
     const {
