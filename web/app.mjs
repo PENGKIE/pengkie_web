@@ -23,6 +23,11 @@ export const lambdaHandler = async (event, context) => {
     const response = {
       statusCode: 200,
       body: JSON.stringify(res),
+      headers: {
+        "Access-Control-Allow-Origin": "*",
+        "Access-Control-Allow-Methods": "OPTIONS, POST, GET, PUT",
+        "Access-Control-Allow-Headers": "Content-Type",
+      }
     };
 
     return response;
@@ -36,10 +41,17 @@ export const lambdaHandler = async (event, context) => {
     }
     return {
       statusCode: 500,
+      headers: {
+        "Access-Control-Allow-Origin": "*",
+        "Access-Control-Allow-Methods": "OPTIONS, POST, GET, PUT",
+        "Access-Control-Allow-Headers": "Content-Type",
+      },
       body: JSON.stringify({
         message: 'Internal Server Error',
         error,
-      }),
+      },
+
+      ),
     }
   }
 }
