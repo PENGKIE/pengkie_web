@@ -53,7 +53,7 @@ module.exports = async (input) => {
     } = input[0]
 
     let forError;
-    const appBase = ['vendor', 'store', 'consumer'];
+    const appBase = ['vendor', 'shop', 'consumer'];
 
     let match = {};
     const outptu = {};
@@ -73,7 +73,7 @@ module.exports = async (input) => {
             return { app: a }
         });
         if (app.length == 1) match.app = app[0]
-        else if (app.length == 2) match['$or'] = app;
+        else if (app.length == 2) match['$or'] = apps;
     }
     if (forError) return forError;
 
