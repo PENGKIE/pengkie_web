@@ -10,13 +10,19 @@ async function callApiWeb() {
     //   fnName: 'getListDocument',
     //   args: [ {} ]
 
-      fnName: 'getDocumentById',
-      args: [
-        { 
-            docId: "6737bbc27323f423dc605920",
-            docType : "f"
-        }
-      ]
+      fnName: 'getListLogging',
+      args: [ {
+        env: 'dev',
+        app: ['store']
+      } ]
+
+      // fnName: 'getDocumentById',
+      // args: [
+      //   { 
+      //       docId: "6737bbc27323f423dc605920",
+      //       docType : "f"
+      //   }
+      // ]
     }
   
     if (!isLocal) url = "http://localhost:3000/" + url;
