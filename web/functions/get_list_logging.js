@@ -80,9 +80,9 @@ module.exports = async (input) => {
     }
     if (forError) return forError;
 
-    if (docId) {
+    if (docId && typeof isNext == 'boolean') {
         if (typeof docId !== "string" || docId.length !== 24) return { error: 'Not found Next page.' }
-        match['_id'] = isNext ? { $gt: newObjectId(docId) } : { $lt: newObjectId(docId) };
+        match['_id'] = isNext ? { $lt: newObjectId(docId) } : { $gt: newObjectId(docId) };
     }
     if (uid) {
         if (typeof uid !== "string" || uid.length !== 24) return { error: 'Not found page with ' + uid + 'uid' }
@@ -107,7 +107,7 @@ module.exports = async (input) => {
         sort  = [
             {
                 $sort: {
-                    _id: 1
+                    _id: -1
                 }
             },
             { $limit: limit + 1 }
@@ -116,13 +116,13 @@ module.exports = async (input) => {
         sort  = [
             {
                 $sort: {
-                    _id: -1
+                    _id: 1
                 }
             },
             { $limit: limit },
             {
                 $sort: {
-                    _id: 1
+                    _id: -1
                 }
             },
         ]
