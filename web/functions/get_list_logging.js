@@ -58,6 +58,7 @@ module.exports = async (input) => {
     let forError;
     const appBase = ['vendor', 'shop', 'consumer'];
 
+    const limit = 50;
     let match = {};
     const outptu = {};
     let dbCol;
@@ -130,7 +131,6 @@ module.exports = async (input) => {
 
     match = Object.keys(match).length ? [{ $match: match }] : [];
 
-    const limit = 50;
     const mdb = await connectDB();
     const db = mdb.db(dbCol);
     const docs = await db.collection('logging').aggregate([
