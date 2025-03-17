@@ -11,11 +11,13 @@ const { connectDB, newObjectId } = require('../utils/connect_db');
         startAt: number
         fnName: string
         currectPage: number
+        isNext: boolean
     }
 
     output {
         currectPage: number
         nextId: string
+        preId
         docs: [doc]
         error : string
     }
@@ -49,12 +51,14 @@ module.exports = async (input) => {
         uid,
         startAt,
         fnName,
-        currectPage
+        currectPage,
+        isNext
     } = input[0]
 
     let forError;
     const appBase = ['vendor', 'shop', 'consumer'];
 
+    const limit = 50;
     let match = {};
     const outptu = {};
     let dbCol;
@@ -64,7 +68,7 @@ module.exports = async (input) => {
         case "qa": dbCol = "pengkie_qa"; break;
         default: return { error: 'Not found ' + env + ' page for ENV.' }
     }
-
+    if (typeof isNext !== 'boolean') return { error: 'Not found page' }
     if (!Array.isArray(app)) return { error: 'Not found with current app' }
     if (app.length) {
         let apps = [...new Set(app)];
@@ -77,9 +81,9 @@ module.exports = async (input) => {
     }
     if (forError) return forError;
 
-    if (docId) {
+    if (docId && typeof isNext == 'boolean') {
         if (typeof docId !== "string" || docId.length !== 24) return { error: 'Not found Next page.' }
-        match['_id'] = { $lt: newObjectId(docId) }
+        match['_id'] = isNext ? { $lt: newObjectId(docId) } : { $gt: newObjectId(docId) };
     }
     if (uid) {
         if (typeof uid !== "string" || uid.length !== 24) return { error: 'Not found page with ' + uid + 'uid' }
@@ -97,21 +101,41 @@ module.exports = async (input) => {
         if (typeof fnName !== "string") return { error: 'Not found page with current function' }
         if (fnName.trim().length) match.fnName = new RegExp(fnName.trim(), "i");
     }
-    if (currectPage) if (typeof currectPage !== 'number' || currectPage < 0) return { error: 'Not found current page' }
+    if (typeof currectPage !== 'number' || currectPage < 0) return { error: 'Not found current page' }
+
+    let sort = [];
+    if (isNext) {
+        sort  = [
+            {
+                $sort: {
+                    _id: -1
+                }
+            },
+            { $limit: limit + 1 }
+        ]
+    } else {
+        sort  = [
+            {
+                $sort: {
+                    _id: 1
+                }
+            },
+            { $limit: limit },
+            {
+                $sort: {
+                    _id: -1
+                }
+            },
+        ]
+    }
 
     match = Object.keys(match).length ? [{ $match: match }] : [];
 
-    const limit = 50;
     const mdb = await connectDB();
     const db = mdb.db(dbCol);
     const docs = await db.collection('logging').aggregate([
         ...match,
-        {
-            $sort: {
-                _id: -1
-            }
-        },
-        { $limit: limit + 1 }
+        ...sort
     ]).toArray();
 
     if (docs.length > limit) {
@@ -119,13 +143,15 @@ module.exports = async (input) => {
         return {
             currectPage: currectPage ? currectPage + 1 : 1,
             nextId: docs[limit - 1]._id.toString(),
-            docs,
+            preId: docs[0]._id.toString(),
+            docs
         }
     }
 
     return {
-        currectPage: currectPage ? currectPage : 1,
-        nextId: null,
+        currectPage: currectPage ? currectPage + 1: 1,
+        nextId: !isNext ? docs[docs.length - 1]._id.toString() : null,
+        preId: docs[0]._id.toString(),
         docs
     }
 }
