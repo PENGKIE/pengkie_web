@@ -12,6 +12,9 @@ const { connectDB, newObjectId } = require('../utils/connect_db');
         fnName: string
         currectPage: number
         isNext: boolean
+        ip: string
+        errorStr: string
+        args: string, array , object
     }
 
     output {
@@ -52,15 +55,19 @@ module.exports = async (input) => {
         startAt,
         fnName,
         currectPage,
-        isNext
+        isNext,
+        ip,
+        errorStr,
+        args
     } = input[0]
 
     let forError;
+    let errorOr;
+    let argsOr;
     const appBase = ['vendor', 'shop', 'consumer'];
 
     const limit = 50;
     let match = {};
-    const outptu = {};
     let dbCol;
     switch (env) {
         case "dev": dbCol = "pengkie"; break;
@@ -91,21 +98,58 @@ module.exports = async (input) => {
     }
     if (startAt) {
         if (typeof startAt !== "number" || startAt <= 0) return { error: 'Not found page date start at ' + new Date(startAt) }
-        match.start = { $gte: startAt };
+        match.start = { $lte: startAt };
     }
     if (isHasError) {
         if (typeof isHasError !== "boolean") return { error: 'Not found page with ' + isHasError + ' isHasError' }
         match.error = { $ne: null };
     }
+    if (errorStr) {
+        if (typeof errorStr == 'string' && errorStr.trim().length) {
+            errorOr = [
+                { error: new RegExp(errorStr.trim(), "i") },
+                { 'error.errorCode': new RegExp(errorStr.trim(), "i") },
+                { 'error.errorMessages.text': new RegExp(errorStr.trim(), "i") }
+            ]
+        }
+    }
     if (fnName) {
         if (typeof fnName !== "string") return { error: 'Not found page with current function' }
         if (fnName.trim().length) match.fnName = new RegExp(fnName.trim(), "i");
     }
+    if (ip) {
+        if (typeof ip !== "string") return { error: 'Not found page with current IP' }
+        if (ip.trim().length) match.ip = new RegExp(ip.trim(), "i");
+    }
+
     if (typeof currectPage !== 'number' || currectPage < 0) return { error: 'Not found current page' }
+
+    if (args) {
+        if (Array.isArray(args) && args.length) args = args[0];
+        if (typeof args == 'object' && !Array.isArray(args)) {
+            argsOr = [
+                Object.keys(args).reduce((p, x) => ({ ...p, ['args.' + x]: args[x] }), {}),
+                { args: { $elemMatch: args } }
+            ]
+        } else {
+            if (!isNaN(Number(args))) argsOr = [{ args: args * 1 }, { args: args }];
+            else if (args.toUpperCase() === 'TRUE' || args.toUpperCase() === 'FALSE') argsOr = [{ args: Boolean(args) }, { args: args }];
+            else match.args = new RegExp(args.trim(), "i");
+        }
+    }
+
+    if (argsOr || errorOr) {
+        if (argsOr && errorOr) {
+            match['$and'] = [
+                { $or: argsOr },
+                { $or: errorOr }
+            ]
+        } else match['$or'] = argsOr || errorOr;
+    }
 
     let sort = [];
     if (isNext) {
-        sort  = [
+        sort = [
             {
                 $sort: {
                     _id: -1
@@ -114,7 +158,9 @@ module.exports = async (input) => {
             { $limit: limit + 1 }
         ]
     } else {
-        sort  = [
+        if (currectPage <= 1) return { error: 'Not found current page' }
+        currectPage -= 2;
+        sort = [
             {
                 $sort: {
                     _id: 1
@@ -149,7 +195,7 @@ module.exports = async (input) => {
     }
 
     return {
-        currectPage: currectPage ? currectPage + 1: 1,
+        currectPage: currectPage ? currectPage + 1 : 1,
         nextId: !isNext ? docs[docs.length - 1]._id.toString() : null,
         preId: docs[0]._id.toString(),
         docs
