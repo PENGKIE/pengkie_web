@@ -46,7 +46,7 @@ const { connectDB, newObjectId } = require('../utils/connect_db');
 module.exports = async (input) => {
 
     if (!input.length) throw 'not found input';
-    const {
+    let {
         docId,
         env,
         isHasError,
@@ -183,6 +183,8 @@ module.exports = async (input) => {
         ...match,
         ...sort
     ]).toArray();
+
+    if (!docs.length) return { error: 'Not found current page' };
 
     if (docs.length > limit) {
         docs.length = limit;
