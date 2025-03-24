@@ -53,6 +53,7 @@ module.exports = async (input) => {
         app,
         uid,
         startAt,
+        endAt,
         fnName,
         currectPage,
         isNext,
@@ -96,9 +97,14 @@ module.exports = async (input) => {
         if (typeof uid !== "string" || uid.length !== 24) return { error: 'Not found page with ' + uid + 'uid' }
         match.uid = uid;
     }
-    if (startAt) {
-        if (typeof startAt !== "number" || startAt <= 0) return { error: 'Not found page date start at ' + new Date(startAt) }
-        match.start = { $lte: startAt };
+    if (startAt || endAt) {
+        if (startAt) if (typeof startAt !== "number" || startAt <= 0) return { error: 'Not found page date start at ' + new Date(startAt) }
+        if (endAt) if (typeof endAt !== "number" || endAt <= 0) return { error: 'Not found page date end at ' + new Date(startAt) }
+        if (startAt && endAt) {
+            if (startAt == endAt) match.start = startAt;
+            else if (endAt > startAt) match.start = { $lte: endAt, $gte: startAt };
+            else match.start = { $lte: startAt, $gte: endAt };
+        } else match.start = startAt ? { $lte: startAt } : { $gte: endAt };
     }
     if (isHasError) {
         if (typeof isHasError !== "boolean") return { error: 'Not found page with ' + isHasError + ' isHasError' }
