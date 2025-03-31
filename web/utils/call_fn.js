@@ -17,6 +17,8 @@ module.exports = (name, ...args) => {
             return require('../functions/get_pdpa.js')(...args);
         case 'getTerms':
             return require('../functions/get_terms.js')(...args);
+        case 'getSchema':
+            return require('../functions/schema/get_schema.js')(...args);
         default:
             throw new Error('Function not found');
     }
