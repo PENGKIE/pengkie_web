@@ -70,10 +70,16 @@ module.exports = async (input) => {
     const limit = 50;
     let match = {};
     let dbCol;
+    let isProd = false;
     switch (env) {
         case "dev": dbCol = "pengkie"; break;
         case "test": dbCol = "pengkie_test"; break;
         case "qa": dbCol = "pengkie_qa"; break;
+        case "prod":
+            dbCol = "pengkie_prod";
+            isProd = true;
+            ip = null;
+            break;
         default: return { error: 'Not found ' + env + ' page for ENV.' }
     }
     if (typeof isNext !== 'boolean') return { error: 'Not found page' }
@@ -181,6 +187,8 @@ module.exports = async (input) => {
         ]
     }
 
+    if (isProd) sort.push({ $unset: ['ip', 'token '] });
+
     match = Object.keys(match).length ? [{ $match: match }] : [];
 
     const mdb = await connectDB();
@@ -198,6 +206,7 @@ module.exports = async (input) => {
             currectPage: currectPage ? currectPage + 1 : 1,
             nextId: docs[limit - 1]._id.toString(),
             preId: docs[0]._id.toString(),
+            isProd,
             docs
         }
     }
@@ -206,6 +215,7 @@ module.exports = async (input) => {
         currectPage: currectPage ? currectPage + 1 : 1,
         nextId: !isNext ? docs[docs.length - 1]._id.toString() : null,
         preId: docs[0]._id.toString(),
+        isProd,
         docs
     }
 }
