@@ -12,21 +12,23 @@ module.exports = async (input) => {
 
     const mdb = await connectDB();
     const db = mdb.db("schema");
-    const schemaCol = db.collection("schema");
+    const enumCol = db.collection("enum");
 
-    const schema = await schemaCol.findOne({
+    const enumObj = await enumCol.findOne({
         _id: new BSON.ObjectId(id)
     });
 
-    if (!schema) throw 'not found schema';
+    if (!enumObj) throw 'not found enum';
 
-    delete schema.data[fieldName];
+    const data = enumObj.data;
+    if (!data[fieldName]) throw 'not found fieldName';
 
-    await schemaCol.updateOne({
+    delete data[fieldName];
+    await enumCol.updateOne({
         _id: new BSON.ObjectId(id)
     }, {
         $set: {
-            data: schema.data,
+            data,
             updateAt: new Date().getTime()
         }
     });

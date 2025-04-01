@@ -1,5 +1,4 @@
 
-
 const { BSON } = require('mongodb');
 const { connectDB } = require('../../utils/connect_db');
 module.exports = async (input) => {
@@ -24,20 +23,22 @@ module.exports = async (input) => {
 
     const mdb = await connectDB();
     const db = mdb.db("schema");
-    const schemaCol = db.collection("schema");
+    const enumCol = db.collection("enum");
 
     const now = new Date().getTime();
-    const schemaObj = await schemaCol.findOne({
+
+    const enumObj = await enumCol.findOne({
         _id: new BSON.ObjectId(id)
     });
 
-    if (!schemaObj) throw 'not found schema';
-    const data = schemaObj.data;
+    if (!enumObj) throw 'not found enum';
 
+    const data = enumObj.data;
     if (!data[fieldName]) throw 'not found fieldName';
+
     data[fieldName].descriptions = descriptions;
 
-    await schemaCol.updateOne({
+    await enumCol.updateOne({
         _id: new BSON.ObjectId(id)
     }, {
         $set: {

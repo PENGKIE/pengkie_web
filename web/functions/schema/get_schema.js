@@ -42,16 +42,17 @@ module.exports = async (input) => {
         edit field name /
         delete field /
         edit type field (type ref isArray) /
-        edit descriptions field
+        edit descriptions field /
     create enum
-        create new enum
-        edit name enum
-        edit descriptions enum
-        add new field
-        edit field name
-        delete field
-        edit descriptions field
-    get schemas that used in another schema by id
+        create new enum /
+        edit name enum /
+        edit descriptions enum /
+        add new field /
+        edit field name /
+        delete field /
+        edit descriptions field /
+    get schemas that used in another schema by id /
+    get enum that used in another schema by id /
     get graphql schemas
     // end list function
 

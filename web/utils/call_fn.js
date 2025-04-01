@@ -39,10 +39,26 @@ module.exports = (name, ...args) => {
             return require('../functions/schema/edit_type_field_schema.js')(...args);
         case 'editFieldDescriptionsSchema':
             return require('../functions/schema/edit_descriptions_field_schema.js')(...args);
+        case 'getSchemasOrEnumsUsedInSchema':
+            return require('../functions/schema/get_schemas_or_enum_used_another_schema.js')(...args);
         case 'getEnum':
             return require('../functions/schema/get_enum.js')(...args);
         case 'getEnumById':
             return require('../functions/schema/get_enum_by_id.js')(...args);
+        case 'createEnum':
+            return require('../functions/schema/create_enum.js')(...args);
+        case 'editNameEnum':
+            return require('../functions/schema/edit_name_enum.js')(...args);
+        case 'editDescriptionsEnum':
+            return require('../functions/schema/edit_descriptions_enum.js')(...args);
+        case 'addFieldEnum':
+            return require('../functions/schema/enum_add_new_field.js')(...args);
+        case 'editFieldNameEnum':
+            return require('../functions/schema/edit_field_name_enum.js')(...args);
+        case 'deleteFieldEnum':
+            return require('../functions/schema/delete_field_enum.js')(...args);
+        case 'editFieldDescriptionsEnum':
+            return require('../functions/schema/edit_descriptions_field_enum.js')(...args);
         default:
             throw new Error('Function not found');
     }
