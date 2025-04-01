@@ -59,6 +59,8 @@ module.exports = (name, ...args) => {
             return require('../functions/schema/delete_field_enum.js')(...args);
         case 'editFieldDescriptionsEnum':
             return require('../functions/schema/edit_descriptions_field_enum.js')(...args);
+        case 'getGraphql':
+            return require('../functions/schema/get_graphql.js')(...args);
         default:
             throw new Error('Function not found');
     }
