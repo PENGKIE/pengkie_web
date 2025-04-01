@@ -13,7 +13,7 @@ module.exports = async (input) => {
         isMain: true
     } : {}).toArray();
 
-    return schemas.map(schema => {
+    const res = schemas.map(schema => {
         const id = schema._id.toString();
         const name = schema.name;
         return {
@@ -21,17 +21,36 @@ module.exports = async (input) => {
             name
         }
     });
+
+    res.sort((a, b) => a.name.localeCompare(b.name));
+    return res;
 }
 
 /* 
 // type input
 //list function
-    get schemas (main and all)
-    get schema by id
-    get enums
-    get enum by id
+    get schemas (main and all) /
+    get schema by id /
+    get enums /
+    get enum by id /
     edit schema
-    create schema
+        create new schema /
+        edit isMain schema /
+        edit name schema /
+        edit descriptions schema /
+        add new field (and type ref isArray) /
+        edit field name /
+        delete field /
+        edit type field (type ref isArray) /
+        edit descriptions field
+    create enum
+        create new enum
+        edit name enum
+        edit descriptions enum
+        add new field
+        edit field name
+        delete field
+        edit descriptions field
     get schemas that used in another schema by id
     get graphql schemas
     // end list function

@@ -19,8 +19,30 @@ module.exports = (name, ...args) => {
             return require('../functions/get_terms.js')(...args);
         case 'getSchema':
             return require('../functions/schema/get_schema.js')(...args);
+        case 'getSchemaById':
+            return require('../functions/schema/get_schema_by_id.js')(...args);
+        case 'createSchema':
+            return require('../functions/schema/create_schema.js')(...args);
+        case 'editIsMainSchema':
+            return require('../functions/schema/edit_is_main_schema.js')(...args);
+        case 'editNameSchema':
+            return require('../functions/schema/edit_name_schema.js')(...args);
+        case 'editDescriptionsSchema':
+            return require('../functions/schema/edit_descriptions_schema.js')(...args);
+        case 'addFieldSchema':
+            return require('../functions/schema/schema_add_new_field.js')(...args);
+        case 'editFieldNameSchema':
+            return require('../functions/schema/edit_field_name_schema.js')(...args);
+        case 'deleteFieldSchema':
+            return require('../functions/schema/delete_field_schema.js')(...args);
+        case 'editFieldTypeSchema':
+            return require('../functions/schema/edit_type_field_schema.js')(...args);
+        case 'editFieldDescriptionsSchema':
+            return require('../functions/schema/edit_descriptions_field_schema.js')(...args);
         case 'getEnum':
             return require('../functions/schema/get_enum.js')(...args);
+        case 'getEnumById':
+            return require('../functions/schema/get_enum_by_id.js')(...args);
         default:
             throw new Error('Function not found');
     }
