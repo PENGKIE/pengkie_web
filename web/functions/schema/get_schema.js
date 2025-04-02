@@ -83,28 +83,6 @@ args:[id:String]
 fn:deleteEnum
 args:[id:String]
 
-ฉันต้องการ web ที่มี text ให้คลิกเลือก 2 อัน คือ schema และ enum
-เมื่อคลิกที่ schema จะมี list รายชื่อ ของ schema ที่มี isMain = true และมีปุ่ม สร้างอยุ่เหนือรายการ
-เมื่อคลิกที่ enum จะมี list รายชื่อ ของ enum และมีปุ่ม สร้างอยุ่เหนือรายการ
-ในแต่ละรายการจะมีปุ่ม + อยู่ข้างหน้า ถ้าคลิกจะเป็นการขยายรายการนั้นออกมา และมีปุ่มรูปดินสออยู่ข้างหลัง ถ้าคลิกจะเป็นการแก้ไขชื่อของ schema หรือ enum นั้น
-โดยจะขยายออกมาบันทัดแรกจะเป็น ปุ่ม ถูกใช้ที่ไหนบ้าง และปุ่ม graphql
-เมื่อคลิกจะมี list รายชื่อ ของ schema ที่ใช้ schema หรือ enum นั้นอยู่
-บรรทัดที่ 2 จะมี discriptions ของ schema หรือ enum นั้น และมีปุ่มแก้ไขอยู่ข้างหลัง
-บรรทัดที่ 3 จะมี list ของ field ของ schema หรือ enum นั้น
-    enum จะแสดง field name และ descriptions ของ field นั้น และมีปุ่มแก้ไขอยู่ข้างหลัง ของ field และ discriptions และมีปุ่มลบอยู่ข้างหลังสุด
-    schema จะแสดง field name และ type ของ field นั้น และมีปุ่มแก้ไขอยู่ข้างหลัง ของ field name, type, discriptions และมีปุ่มลบอยู่ข้างหลังสุด
-         ถ้า field type เป็น Object หรือ Enum จะมีปุ่ม + อยู่ข้างหลังสุด ถ้าคลิกจะเป็นการขยายรายการนั้นออกมา และมีปุ่มรูปดินสออยู่ข้างหลังสุด ถ้าคลิกจะเป็นการแก้ไขชื่อของ schema หรือ enum นั้น
-    และจะมีปุ่ม add field อยู่ข้างล่างสุด
-    ถ้าคลิกจะเป็นการเพิ่ม field ใหม่ โดยจะมี input ให้กรอก field name, type, isArray, ref (ถ้า type เป็น Object หรือ Enum) (Object getSchema isOnlyMain = false, Enum getEnum) และมีปุ่มถูกอยู่ข้างหลังสุด
-
-
-
-
-
-
-
-
-
 
 
 

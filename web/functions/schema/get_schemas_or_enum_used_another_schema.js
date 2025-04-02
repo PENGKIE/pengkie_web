@@ -11,9 +11,22 @@ module.exports = async (input) => {
     const db = mdb.db("schema");
     const schemaCol = db.collection("schema");
 
-    const schemas = await schemaCol.find({
-        'data.ref': id
-    }).toArray();
+    const schemas = await schemaCol.aggregate([
+        {
+            $project: {
+                _id: 1,
+                name: 1,
+                data: {
+                    $objectToArray: "$data"
+                }
+            }
+        },
+        {
+            $match: {
+                "data.v.ref": id
+            }
+        },
+    ]).toArray();
 
     if (schemas.length === 0) return [];
 
