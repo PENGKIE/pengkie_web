@@ -48,7 +48,7 @@ module.exports = async (input) => {
     if (!schemaObj) throw 'not found schema';
 
     const data = schemaObj.data;
-    if (data[fieldName]) throw 'fieldName is exist';
+    if (!data[fieldName]) throw 'fieldName is not exist';
 
     const field = {
         type,

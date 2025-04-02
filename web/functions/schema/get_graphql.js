@@ -77,6 +77,7 @@ async function manageSchema(schema) {
             case 'Object':
                 text += `  ${fieldName}: `;
                 if (field.isArray) text += `[`;
+                console.log("ref ", field.ref);
                 const refSchema = await schemaCol.findOne({
                     _id: new BSON.ObjectId(field.ref)
                 });
@@ -89,6 +90,7 @@ async function manageSchema(schema) {
             case 'Enum':
                 text += `  ${fieldName}: `;
                 if (field.isArray) text += `[`;
+                console.log("ref ", field.ref);
                 const enumObj = await enumCol.findOne({
                     _id: new BSON.ObjectId(field.ref)
                 });
