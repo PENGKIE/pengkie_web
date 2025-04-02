@@ -11,7 +11,7 @@ module.exports = async (input) => {
     const db = mdb.db("schema");
     const enumCol = db.collection("enum");
 
-    const enumObj = await enumCol.findOne({
+    await enumCol.deleteOne({
         _id: new BSON.ObjectId(id)
     });
 }
