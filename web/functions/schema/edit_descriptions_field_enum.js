@@ -33,17 +33,19 @@ module.exports = async (input) => {
 
     if (!enumObj) throw 'not found enum';
 
-    const data = enumObj.data;
+    const data = Object.assign({}, enumObj.data);
     if (!data[fieldName]) throw 'not found fieldName';
 
-    data[fieldName].descriptions = descriptions;
 
     await enumCol.updateOne({
         _id: new BSON.ObjectId(id)
     }, {
         $set: {
-            data,
-            updateAt: now
+            "data": {
+                ...data,
+                [fieldName]: descriptions,
+            },
+            "updatedAt": now,
         }
     });
 }
