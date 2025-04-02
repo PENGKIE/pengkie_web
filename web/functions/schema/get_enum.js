@@ -2,8 +2,6 @@
 
 const { connectDB } = require('../../utils/connect_db');
 module.exports = async () => {
-    let isOnlyMain = input[0];
-    if (isOnlyMain == undefined) isOnlyMain = true;
     const mdb = await connectDB();
     const db = mdb.db("schema");
 

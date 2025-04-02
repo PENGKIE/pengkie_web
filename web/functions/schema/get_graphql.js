@@ -15,30 +15,38 @@ module.exports = async (input) => {
         _id: new BSON.ObjectId(id)
     });
 
-    if (!schema) throw 'not found schema';
-    const outputs = [];
-    const schemas = [];
+    if (!schema) {
+        const enumObj = await db.collection("enum").findOne({
+            _id: new BSON.ObjectId(id)
+        });
+        if (!enumObj) throw 'not found schema or enum';
+        const enumText = manageEnum(enumObj);
+        return enumText;
+    } else {
+        const outputs = [];
+        const schemas = [];
 
-    schemas.push(schema);
+        schemas.push(schema);
 
-    while (schemas.length > 0) {
-        const schema = schemas.pop();
-        const { text, listAnotherSchema, listAnotherEnum } = await manageSchema(schema);
-        outputs.push(text);
-        schemas.push(...listAnotherSchema);
-        for (const enumObj of listAnotherEnum) {
-            const enumText = manageEnum(enumObj);
-            outputs.push(enumText);
+        while (schemas.length > 0) {
+            const schema = schemas.pop();
+            const { text, listAnotherSchema, listAnotherEnum } = await manageSchema(schema);
+            outputs.push(text);
+            schemas.push(...listAnotherSchema);
+            for (const enumObj of listAnotherEnum) {
+                const enumText = manageEnum(enumObj);
+                outputs.push(enumText);
+            }
         }
-    }
 
-    return outputs.join('\n');
+        return outputs.join('\n');
+    }
 }
 
 function manageEnum(enumObj) {
     let text = `enum ${enumObj.name} {\n`;
     for (const [fieldName, field] of Object.entries(enumObj.data)) {
-        text += `  ${fieldName}: `;
+        text += `  ${fieldName}\n`;
     }
     text += `}\n\n`;
     return text;

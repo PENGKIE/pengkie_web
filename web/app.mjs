@@ -22,7 +22,7 @@ export const lambdaHandler = async (event, context) => {
 
     const response = {
       statusCode: 200,
-      body: JSON.stringify(res),
+      ...res === undefined ? {} : { body: JSON.stringify(res) },
       headers: {
         "Access-Control-Allow-Origin": "*",
         "Access-Control-Allow-Methods": "OPTIONS, POST, GET, PUT",

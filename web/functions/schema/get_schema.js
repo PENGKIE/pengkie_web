@@ -27,6 +27,87 @@ module.exports = async (input) => {
 }
 
 /* 
+
+
+fn:getSchema
+args: [isOnlyMain:Boolean]
+return: []{name:String, id:String}
+fn:getSchemaById
+args: [id:String]
+return: {name:String, id:String, descriptions:String[], data:{[fieldName]:{type:String, ref:String, isArray:Boolean, descriptions:String[]}}}
+fn:createSchema
+args:[name:String]
+fn:editIsMainSchema
+args:[{id:String, isMain:Boolean}]
+fn:editNameSchema
+args:[{id:String, name:String}]
+fn:editDescriptionsSchema
+args:[{id:String, descriptions:String[]}]
+fn:addFieldSchema
+args:[{id:String, fieldName:String, fieldType:String, isArray:Boolean, ref:String}] (ref is null or id if fieldType is Object or Enum)
+fn:editFieldNameSchema
+args:[{id:String, oldFieldName:String, newFieldName:String}]
+fn:deleteFieldSchema
+args:[{id:String, fieldName:String}]
+fn:editFieldTypeSchema
+args:[{id:String, fieldName:String, type:String, isArray:Boolean, ref:String}] (ref is null or id if type is Object or Enum)
+fn:editFieldDescriptionsSchema
+args:[{id:String, fieldName:String, descriptions:String[]}]
+fn:getSchemasOrEnumsUsedInSchema
+args:[id:String]
+return: [{id:String, name:String}]
+fn:getEnum
+return: []{name:String, id:String}
+fn:getEnumById
+args:[id:String]
+return: {name:String, id:String, descriptions:String[], data:{[fieldName]:[descriptions[]]}}
+fn:createEnum
+args:[name:String]
+fn:editNameEnum
+args:[{id:String, name:String}]
+fn:editDescriptionsEnum
+args:[{id:String, descriptions:String[]}]
+fn:addFieldEnum
+args:[{id:String, fieldName:String}]
+fn:editFieldNameEnum
+args:[{id:String, oldFieldName:String, newFieldName:String}]
+fn:deleteFieldEnum
+args:[{id:String, fieldName:String}]
+fn:editFieldDescriptionsEnum
+args:[{id:String, fieldName:String, descriptions:String[]}]
+fn:getGraphql
+args:[id:String]
+return: String
+fn:deleteSchema
+args:[id:String]
+fn:deleteEnum
+args:[id:String]
+
+ฉันต้องการ web ที่มี text ให้คลิกเลือก 2 อัน คือ schema และ enum
+เมื่อคลิกที่ schema จะมี list รายชื่อ ของ schema ที่มี isMain = true และมีปุ่ม สร้างอยุ่เหนือรายการ
+เมื่อคลิกที่ enum จะมี list รายชื่อ ของ enum และมีปุ่ม สร้างอยุ่เหนือรายการ
+ในแต่ละรายการจะมีปุ่ม + อยู่ข้างหน้า ถ้าคลิกจะเป็นการขยายรายการนั้นออกมา และมีปุ่มรูปดินสออยู่ข้างหลัง ถ้าคลิกจะเป็นการแก้ไขชื่อของ schema หรือ enum นั้น
+โดยจะขยายออกมาบันทัดแรกจะเป็น ปุ่ม ถูกใช้ที่ไหนบ้าง และปุ่ม graphql
+เมื่อคลิกจะมี list รายชื่อ ของ schema ที่ใช้ schema หรือ enum นั้นอยู่
+บรรทัดที่ 2 จะมี discriptions ของ schema หรือ enum นั้น และมีปุ่มแก้ไขอยู่ข้างหลัง
+บรรทัดที่ 3 จะมี list ของ field ของ schema หรือ enum นั้น
+    enum จะแสดง field name และ descriptions ของ field นั้น และมีปุ่มแก้ไขอยู่ข้างหลัง ของ field และ discriptions และมีปุ่มลบอยู่ข้างหลังสุด
+    schema จะแสดง field name และ type ของ field นั้น และมีปุ่มแก้ไขอยู่ข้างหลัง ของ field name, type, discriptions และมีปุ่มลบอยู่ข้างหลังสุด
+         ถ้า field type เป็น Object หรือ Enum จะมีปุ่ม + อยู่ข้างหลังสุด ถ้าคลิกจะเป็นการขยายรายการนั้นออกมา และมีปุ่มรูปดินสออยู่ข้างหลังสุด ถ้าคลิกจะเป็นการแก้ไขชื่อของ schema หรือ enum นั้น
+    และจะมีปุ่ม add field อยู่ข้างล่างสุด
+    ถ้าคลิกจะเป็นการเพิ่ม field ใหม่ โดยจะมี input ให้กรอก field name, type, isArray, ref (ถ้า type เป็น Object หรือ Enum) (Object getSchema isOnlyMain = false, Enum getEnum) และมีปุ่มถูกอยู่ข้างหลังสุด
+
+
+
+
+
+
+
+
+
+
+
+
 // type input
 //list function
     get schemas (main and all) /
