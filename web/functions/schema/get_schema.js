@@ -34,7 +34,7 @@ args: [isOnlyMain:Boolean]
 return: []{name:String, id:String}
 fn:getSchemaById
 args: [id:String]
-return: {name:String, id:String, descriptions:String[], data:{[fieldName]:{type:String, ref:String, isArray:Boolean, descriptions:String[]}}}
+return: {isMain:boolean, name:String, id:String, descriptions:String[], data:{[fieldName]:{type:String, ref:String, isArray:Boolean, descriptions:String[]}}}
 fn:createSchema
 args:[name:String]
 fn:editIsMainSchema

@@ -14,6 +14,7 @@ module.exports = async (input) => {
         case 'String':
         case 'Float':
         case 'Boolean':
+        case 'JSON':
         case 'ObjectId':
             if (ref === undefined) {
                 break;
@@ -69,3 +70,31 @@ module.exports = async (input) => {
     });
 
 }
+
+/* 
+input PengkieUser{
+    _id ObjectId
+    name String
+    lastName String
+    permission [PengkieUserPermission]
+}
+
+input PengkieUserPermission{
+    name: PengkieUserPermissionName
+    meta: JSON
+}
+
+enum PengkieUserPermissionName{
+    luckyDraw
+    updateConmProd
+}
+
+input PengkieUserPermissionLuckyDraw{
+    createRoom:  
+    rejectUser
+}
+
+
+
+ */
+

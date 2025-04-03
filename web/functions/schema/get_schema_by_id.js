@@ -20,7 +20,8 @@ module.exports = async (input) => {
         id: schema._id.toString(),
         name: schema.name,
         descriptions: schema.descriptions,
-        data: schema.data
+        data: schema.data,
+        isMain: schema.isMain,
     }
 }
 /* 

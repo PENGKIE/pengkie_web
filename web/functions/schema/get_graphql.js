@@ -67,6 +67,7 @@ async function manageSchema(schema) {
             case 'String':
             case 'Float':
             case 'Boolean':
+            case 'JSON':
             case 'ObjectId':
                 text += `  ${fieldName}: `;
                 if (field.isArray) text += `[`;

@@ -20,6 +20,7 @@ module.exports = async (input) => {
         case 'String':
         case 'Float':
         case 'Boolean':
+        case 'JSON':
         case 'ObjectId':
             if (ref === undefined) {
                 break;
