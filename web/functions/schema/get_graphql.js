@@ -44,6 +44,7 @@ module.exports = async (input) => {
 }
 
 function manageEnum(enumObj) {
+    enumObj.name = enumObj.name.charAt(0).toUpperCase() + enumObj.name.slice(1);
     let text = `enum ${enumObj.name} {\n`;
     for (const [fieldName, field] of Object.entries(enumObj.data)) {
         text += `  ${fieldName}\n`;
@@ -61,6 +62,7 @@ async function manageSchema(schema) {
     const schemaCol = db.collection("schema");
     const enumCol = db.collection("enum");
 
+    schema.name = schema.name.charAt(0).toUpperCase() + schema.name.slice(1);
     let text = `input ${schema.name} {\n`;
     for (const [fieldName, field] of Object.entries(schema.data)) {
         switch (field.type) {
@@ -84,6 +86,7 @@ async function manageSchema(schema) {
                 });
                 if (!refSchema) throw 'not found schema';
                 listAnotherSchema.push(refSchema);
+                refSchema.name = refSchema.name.charAt(0).toUpperCase() + refSchema.name.slice(1);
                 text += `${refSchema.name}`;
                 if (field.isArray) text += `]`;
                 text += '\n';
@@ -97,6 +100,7 @@ async function manageSchema(schema) {
                 });
                 if (!enumObj) throw 'not found enum';
                 listAnotherEnum.push(enumObj);
+                enumObj.name = enumObj.name.charAt(0).toUpperCase() + enumObj.name.slice(1);
                 text += `${enumObj.name}`;
                 if (field.isArray) text += `]`;
                 text += '\n';
