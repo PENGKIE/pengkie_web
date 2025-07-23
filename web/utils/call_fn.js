@@ -65,6 +65,8 @@ module.exports = (name, ...args) => {
             return require('../functions/schema/delete_schema.js')(...args);
         case 'deleteEnum':
             return require('../functions/schema/delete_enum.js')(...args);
+        case 'getInvitations':
+            return require('../functions/get_invitation_conm_and_shop.js')(...args);
         default:
             throw new Error('Function not found');
     }
